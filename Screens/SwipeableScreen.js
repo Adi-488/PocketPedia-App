@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Dimensions, FlatList, TouchableOpacity, ActivityIndicator } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Feather } from "@expo/vector-icons"; // Added Feather for Bookmark icon
 import axios from "axios";
 
 const { width, height } = Dimensions.get("window");
@@ -13,23 +13,20 @@ const generateCard = async (index, usedTopics) => {
 
     // Avoid repeating topics
     if (usedTopics.includes(topic)) {
-      console.log("Duplicate topic found, fetching another...");
-      return generateCard(index + 1, usedTopics); // Fetch another topic
+      return generateCard(index, usedTopics);
     }
 
     return {
       id: index.toString(),
-      color: hsl(${Math.random() * 360}, 80%, 60%), // ✅ Fixed template string
-      text: response.data.extract || "No summary available.", // Wikipedia summary
-      topic: topic, // Store topic to prevent duplicates
+      title: topic,
+      text: response.data.extract || "No summary available.",
     };
   } catch (error) {
     console.error("Error fetching Wikipedia summary:", error);
     return {
       id: index.toString(),
-      color: hsl(${Math.random() * 360}, 80%, 60%), // ✅ Fixed template string
-      text: "Failed to load summary. Please try again.", // Fallback text
-      topic: "Error", // Fallback topic
+      title: "Error Loading Data",
+      text: "Failed to load summary. Please try again.",
     };
   }
 };
@@ -37,116 +34,153 @@ const generateCard = async (index, usedTopics) => {
 export default function SwipeableScreen() {
   const [cards, setCards] = useState([]);
   const [likes, setLikes] = useState({});
+  const [bookmarks, setBookmarks] = useState({});
   const [loading, setLoading] = useState(false);
-  const [usedTopics, setUsedTopics] = useState([]); // Track used topics
+  const [usedTopics, setUsedTopics] = useState([]);
 
   // Fetch initial cards
   useEffect(() => {
     const fetchInitialCards = async () => {
-      setLoading(true); // Start loading
+      setLoading(true);
       const initialCards = await Promise.all(
         Array.from({ length: 10 }, (_, i) => generateCard(i, usedTopics))
       );
       setCards(initialCards);
-      setUsedTopics(initialCards.map((card) => card.topic)); // Update used topics
-      setLoading(false); // Stop loading
+      setUsedTopics(initialCards.map((card) => card.title));
+      setLoading(false);
     };
     fetchInitialCards();
   }, []);
 
-  // Function to add more cards dynamically when user reaches the end
+  // Load more cards dynamically
   const loadMoreCards = async () => {
-    if (loading) return; // Prevent multiple calls
-    setLoading(true); // Start loading
+    if (loading) return;
+    setLoading(true);
     const newCards = await Promise.all(
       Array.from({ length: 10 }, (_, i) => generateCard(cards.length + i, usedTopics))
     );
     setCards((prevCards) => [...prevCards, ...newCards]);
-    setUsedTopics((prevTopics) => [...prevTopics, ...newCards.map((card) => card.topic)]); // Update used topics
-    setLoading(false); // Stop loading
+    setUsedTopics((prevTopics) => [...prevTopics, ...newCards.map((card) => card.title)]);
+    setLoading(false);
   };
 
-  // Toggle like button
+  // Toggle like
   const toggleLike = (id) => {
     setLikes((prevLikes) => ({
       ...prevLikes,
-      [id]: !prevLikes[id], // Toggle like state
+      [id]: !prevLikes[id],
+    }));
+  };
+
+  // Toggle bookmark
+  const toggleBookmark = (id) => {
+    setBookmarks((prevBookmarks) => ({
+      ...prevBookmarks,
+      [id]: !prevBookmarks[id],
     }));
   };
 
   return (
-    <FlatList
-      data={cards}
-      keyExtractor={(item) => item.id}
-      vertical
-      pagingEnabled
-      showsVerticalScrollIndicator={false}
-      onEndReached={loadMoreCards} // Load more when reaching bottom
-      onEndReachedThreshold={0.7} // ✅ Adjusted threshold for better triggering
-      renderItem={({ item }) => (
-        <View style={[styles.card, { backgroundColor: item.color }]}>
-          <Text style={styles.title}>{item.topic}</Text>
-          <Text style={styles.text}>{item.text}</Text>
+    <View style={styles.container}>
+      <FlatList
+        data={cards}
+        keyExtractor={(item) => item.id}
+        vertical
+        pagingEnabled
+        showsVerticalScrollIndicator={false}
+        onEndReached={loadMoreCards}
+        onEndReachedThreshold={0.5}
+        renderItem={({ item }) => (
+          <View style={styles.card}>
+            {/* Card Title */}
+            <Text style={styles.title}>{item.title}</Text>
 
-          {/* Buttons on Right Side */}
-          <View style={styles.buttonsContainer}>
-            {/* Like Button */}
-            <TouchableOpacity onPress={() => toggleLike(item.id)} style={styles.iconButton}>
-              <AntDesign
-                name={likes[item.id] ? "heart" : "hearto"}
-                size={32}
-                color={likes[item.id] ? "red" : "white"}
-              />
-              <Text style={styles.iconText}>{likes[item.id] ? "Liked" : "Like"}</Text>
-            </TouchableOpacity>
+            {/* Summary Text */}
+            <Text style={styles.text}>{item.text}</Text>
 
-            {/* Share Button */}
-            <TouchableOpacity style={styles.iconButton}>
-              <AntDesign name="sharealt" size={32} color="white" />
-              <Text style={styles.iconText}>Share</Text>
-            </TouchableOpacity>
+            {/* Buttons Container */}
+            <View style={styles.buttonsContainer}>
+              {/* Like Button */}
+              <TouchableOpacity onPress={() => toggleLike(item.id)} style={styles.iconButton}>
+                <AntDesign
+                  name={likes[item.id] ? "heart" : "hearto"}
+                  size={28}
+                  color={likes[item.id] ? "#e74c3c" : "#333"}
+                />
+                <Text style={[styles.iconText, likes[item.id] && { color: "#e74c3c" }]}>
+                  {likes[item.id] ? "Liked" : "Like"}
+                </Text>
+              </TouchableOpacity>
+
+              {/* Bookmark Button */}
+              <TouchableOpacity onPress={() => toggleBookmark(item.id)} style={styles.iconButton}>
+                <Feather
+                  name={bookmarks[item.id] ? "bookmark" : "bookmark"}
+                  size={28}
+                  color={bookmarks[item.id] ? "#3498db" : "#333"}
+                />
+                <Text style={[styles.iconText, bookmarks[item.id] && { color: "#3498db" }]}>
+                  {bookmarks[item.id] ? "Saved" : "Bookmark"}
+                </Text>
+              </TouchableOpacity>
+
+              {/* Share Button */}
+              <TouchableOpacity style={styles.iconButton}>
+                <AntDesign name="sharealt" size={28} color="#333" />
+                <Text style={styles.iconText}>Share</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      )}
-      ListFooterComponent={
-        loading ? <ActivityIndicator size="large" color="#fff" /> : null
-      }
-    />
+        )}
+        ListFooterComponent={loading ? <ActivityIndicator size="large" color="#555" /> : null}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#f5f5f5",
+    paddingVertical: 20,
+  },
   card: {
-    width,
-    height,
-    justifyContent: "center",
-    alignItems: "center",
+    width: width * 0.9,
+    backgroundColor: "#fff",
+    borderRadius: 10,
     padding: 20,
+    marginHorizontal: width * 0.05,
+    marginBottom: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
   },
   title: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: "bold",
-    color: "white",
+    color: "#333",
     marginBottom: 10,
-  },
-  text: {
-    fontSize: 18,
-    color: "white",
     textAlign: "center",
   },
+  text: {
+    fontSize: 16,
+    color: "#555",
+    textAlign: "center",
+    paddingHorizontal: 10,
+  },
   buttonsContainer: {
-    position: "absolute",
-    right: 20,
-    bottom: 120,
-    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginTop: 20,
   },
   iconButton: {
-    marginBottom: 20,
     alignItems: "center",
   },
   iconText: {
-    color: "white",
     fontSize: 14,
+    color: "#333",
     marginTop: 4,
   },
 });
