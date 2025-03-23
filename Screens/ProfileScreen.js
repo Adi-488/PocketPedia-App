@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Switch, Image, Alert } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Switch,
+  Image,
+  Alert,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign, Feather } from "@expo/vector-icons";
 
@@ -23,64 +31,96 @@ export default function ProfileScreen({ setIsAuthenticated }) {
   const handleDeleteAccount = () => {
     Alert.alert("Delete Account", "This action is irreversible. Proceed?", [
       { text: "Cancel", style: "cancel" },
-      { text: "Delete", style: "destructive", onPress: () => Alert.alert("Account deleted!") },
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: () => Alert.alert("Account deleted!"),
+      },
     ]);
   };
 
   return (
     <View style={[styles.container, isDarkMode && styles.darkContainer]}>
-     
+    
+      
 
       {/* User Info */}
       <Text style={[styles.text, isDarkMode && styles.darkText]}>John Doe</Text>
-      <Text style={[styles.email, isDarkMode && styles.darkText]}>johndoe@example.com</Text>
+      <Text style={[styles.email, isDarkMode && styles.darkText]}>
+        johndoe@example.com
+      </Text>
 
       {/* Edit Profile Button */}
-      <TouchableOpacity style={styles.editButton} onPress={() => navigation.navigate("EditProfile")}>
-        <Feather name="edit" size={24} color="#fff" />
-        <Text style={styles.editText}>Edit Profile</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate("EditProfile")}
+      >
+        <Feather name="edit" size={20} color="#fff" />
+        <Text style={styles.buttonText}>Edit Profile</Text>
       </TouchableOpacity>
 
       {/* Dark Mode Toggle */}
       <View style={styles.settingRow}>
-        <Text style={[styles.settingText, isDarkMode && styles.darkText]}>Dark Mode</Text>
-        <Switch value={isDarkMode} onValueChange={setIsDarkMode} />
+        <Text style={[styles.settingText, isDarkMode && styles.darkText]}>
+          Dark Mode
+        </Text>
+        <Switch
+          value={isDarkMode}
+          onValueChange={setIsDarkMode}
+          thumbColor={isDarkMode ? "#1DB954" : "#ddd"}
+        />
       </View>
 
       {/* Settings Button */}
-      <TouchableOpacity style={styles.settingsButton} onPress={() => navigation.navigate("Settings")}>
-        <AntDesign name="setting" size={24} color="white" />
-        <Text style={styles.settingsText}>Settings & Privacy</Text>
+      <TouchableOpacity
+        style={[styles.button, styles.settingsButton]}
+        onPress={() => navigation.navigate("Settings")}
+      >
+        <AntDesign name="setting" size={20} color="#fff" />
+        <Text style={styles.buttonText}>Settings & Privacy</Text>
       </TouchableOpacity>
 
       {/* Logout Button */}
-      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-        <Text style={styles.logoutText}>Logout</Text>
+      <TouchableOpacity
+        style={[styles.button, styles.logoutButton]}
+        onPress={handleLogout}
+      >
+        <Text style={styles.buttonText}>Logout</Text>
       </TouchableOpacity>
 
       {/* Delete Account Button */}
-      <TouchableOpacity style={styles.deleteButton} onPress={handleDeleteAccount}>
-        <Text style={styles.deleteText}>Delete Account</Text>
+      <TouchableOpacity
+        style={[styles.button, styles.deleteButton]}
+        onPress={handleDeleteAccount}
+      >
+        <Text style={styles.buttonText}>Delete Account</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
+// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#ffffff",
+    backgroundColor: "#f5f5f5",
     padding: 20,
   },
   darkContainer: {
-    backgroundColor: "#222",
+    backgroundColor: "#121212",
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginBottom: 15,
   },
   text: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "bold",
-    color: "#000",
+    color: "#222",
     marginBottom: 5,
   },
   darkText: {
@@ -91,21 +131,18 @@ const styles = StyleSheet.create({
     color: "#666",
     marginBottom: 20,
   },
-  avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 15,
-  },
-  editButton: {
+  button: {
     flexDirection: "row",
     backgroundColor: "#1E90FF",
-    padding: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
     borderRadius: 8,
     alignItems: "center",
-    marginBottom: 20,
+    justifyContent: "center",
+    width: "80%",
+    marginBottom: 15,
   },
-  editText: {
+  buttonText: {
     color: "#fff",
     fontSize: 16,
     marginLeft: 8,
@@ -119,42 +156,15 @@ const styles = StyleSheet.create({
   },
   settingText: {
     fontSize: 18,
-    color: "#000",
+    color: "#333",
   },
   settingsButton: {
-    flexDirection: "row",
-    backgroundColor: "#808080",
-    padding: 10,
-    borderRadius: 8,
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  settingsText: {
-    color: "#fff",
-    fontSize: 16,
-    marginLeft: 8,
+    backgroundColor: "#555",
   },
   logoutButton: {
     backgroundColor: "#FF3B30",
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 8,
-    marginBottom: 10,
-  },
-  logoutText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
   },
   deleteButton: {
     backgroundColor: "#8B0000",
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 8,
-  },
-  deleteText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
   },
 });
