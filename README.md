@@ -2,55 +2,65 @@
 
 PocketPedia is a React Native application designed to provide users with a comprehensive digital encyclopedia in their pocket. The app allows users to search, save, and explore various topics in an intuitive and user-friendly manner.
 
-## Features
 
-- *Search Functionality:* Users can search for topics and receive detailed information.
-- *Bookmarking:* Save favorite topics for easy access later.
-- *Offline Mode:* Access saved content without an internet connection.
-- *Dark Mode Support:* Switch between light and dark themes.
-- *User-friendly UI:* Intuitive design for seamless navigation.
+## Features
+- **Swipeable Wikipedia Snippets**: Users can swipe through bite-sized Wikipedia content.
+- **Infinite Scrolling**: Each swipe loads a new snippet dynamically.
+- **Navigation Bar**: Easily switch between different sections of the app.
+- **Machine Learning Recommendations** *(Future Scope)*: Enhance content discovery through AI-based recommendations.
 
 ## Installation
 
-To run PocketPedia locally, follow these steps:
+### Prerequisites
+Ensure you have the following installed:
+- [Node.js](https://nodejs.org/) (Latest LTS version recommended)
+- [React Native](https://reactnative.dev/docs/environment-setup) CLI
+- [Expo](https://expo.dev/) (for quick testing, optional but recommended)
+- Git (for cloning the repository)
 
-1. Clone the repository:
-   sh
-   git clone https://github.com/your-repo/pocketpedia.git
-   
-2. Navigate to the project directory:
-   sh
-   cd pocketpedia
-   
-3. Install dependencies:
-   sh
+### Steps
+1. **Clone the Repository**
+   ```sh
+   git clone https://github.com/your-repo/tiktok-for-wikipedia.git
+   cd tiktok-for-wikipedia
+   ```
+
+2. **Install Dependencies**
+   ```sh
    npm install
-   
-4. Run the app:
-   sh
-   npx react-native run-android # For Android
-   npx react-native run-ios # For iOS
-   
+   ```
 
-## Functions and Working
+3. **Start the Development Server**
+   ```sh
+   npm start
+   ```
+   or (if using Expo):
+   ```sh
+   expo start
+   ```
 
-### 1. *Search Functionality*
-   - Users can enter keywords to search for topics.
-   - Fetches data from an API or a local database.
-   - Displays relevant results with detailed descriptions.
+4. **Run on Emulator or Device**
+   - For Android: `npm run android`
+   - For iOS: `npm run ios` *(Mac only, requires Xcode)*
 
-### 2. *Bookmarking System*
-   - Users can save topics for quick access.
-   - Bookmarked items are stored locally.
+## Project Structure
+```
+/tiktok-for-wikipedia
+│── /src
+│   ├── /components     # Reusable UI components
+│   ├── /screens        # Main application screens
+│   ├── /utils          # Helper functions
+│── App.js              # Entry point of the application
+│── package.json        # Project metadata and dependencies
+│── README.md           # Project documentation
+```
 
-### 3. *Offline Mode*
-   - Saves previously accessed topics for offline reading.
-   - Uses local storage to cache data.
+## Development Environment
+This project was developed using **Expo Snack**, an online editor for running React Native applications. You can test and modify the code directly in Snack without needing a local setup.
 
-### 4. *Dark Mode Support*
-   - Users can toggle between light and dark modes.
-   - Enhances readability based on user preference.
+## Contributing
+We welcome contributions! Feel free to fork the repository and submit pull requests.
 
-### 5. *User Authentication (Optional Feature)*
-   - Sign-in and sign-out functionalities.
-   - User profile management.
+
+
+
