@@ -1,96 +1,166 @@
 import React from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView } from "react-native";
-import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, ImageBackground } from "react-native";
+import { AntDesign, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
-      {/* Header Section */}
-      <Text style={styles.welcomeText}>🎓 Welcome Back!</Text>
-      <Text style={styles.subText}>Continue learning and growing.</Text>
+      {/* Header Section with Overlay */}
+      <ImageBackground source={{ uri: "https://source.unsplash.com/1600x900/?education,books" }} style={styles.header}>
+        <View style={styles.overlay} />
+        <Text style={styles.welcomeText}>Welcome Back 👋</Text>
+        <Text style={styles.subText}>Continue learning and achieve your goals.</Text>
+      </ImageBackground>
 
       {/* Search Bar */}
       <View style={styles.searchBar}>
-        <AntDesign name="search1" size={20} color="gray" />
-        <TextInput style={styles.searchInput} placeholder="Search topics..." />
+        <AntDesign name="search1" size={20} color="#777" />
+        <TextInput 
+          style={styles.searchInput} 
+          placeholder="Search courses, topics..." 
+          placeholderTextColor="#777" 
+        />
       </View>
 
       {/* Quick Access Section */}
+      <Text style={styles.sectionTitle}>Quick Access</Text>
       <ScrollView contentContainerStyle={styles.cardsContainer} horizontal showsHorizontalScrollIndicator={false}>
-        <TouchableOpacity style={styles.card}>
-          <FontAwesome5 name="book" size={28} color="#4A90E2" />
-          <Text style={styles.cardText}>BookMarks</Text>
-        </TouchableOpacity>
+        {quickAccessItems.map((item, index) => (
+          <TouchableOpacity key={index} style={styles.card}>
+            {item.icon}
+            <Text style={styles.cardText}>{item.label}</Text>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
 
-        <TouchableOpacity style={styles.card}>
-          <AntDesign name="linechart" size={28} color="#E67E22" />
-          <Text style={styles.cardText}>Progress</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.card}>
-          <FontAwesome5 name="users" size={28} color="#27AE60" />
-          <Text style={styles.cardText}>Community</Text>
-        </TouchableOpacity>
+      {/* Categories Section */}
+      <Text style={styles.sectionTitle}>Categories</Text>
+      <ScrollView contentContainerStyle={styles.categoryContainer} horizontal showsHorizontalScrollIndicator={false}>
+        {categories.map((category, index) => (
+          <TouchableOpacity key={index} style={styles.categoryCard}>
+            <Text style={styles.categoryText}>{category}</Text>
+          </TouchableOpacity>
+        ))}
       </ScrollView>
     </View>
   );
 }
 
+// Quick Access Items
+const quickAccessItems = [
+  { label: "Bookmarks", icon: <FontAwesome5 name="bookmark" size={28} color="#007AFF" /> },
+  { label: "Progress", icon: <AntDesign name="linechart" size={28} color="#E67E22" /> },
+  { label: "Community", icon: <FontAwesome5 name="users" size={28} color="#27AE60" /> },
+  { label: "Support", icon: <MaterialIcons name="support-agent" size={28} color="#C0392B" /> },
+];
+
+// Course Categories
+const categories = ["Technology", "Business", "Science", "Arts & Design"];
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: "#F8F9FD",
+    backgroundColor: "#F8FAFC",
+  },
+  header: {
+    width: "100%",
+    height: 200,
+    justifyContent: "center", // Center the text
+    alignItems: "center",
+    paddingHorizontal: 20,
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.4)", // Dark overlay to enhance text contrast
   },
   welcomeText: {
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: "bold",
-    color: "#333",
-    marginTop: 20,
+    color: "#FFF",
+    textShadowColor: "rgba(0, 0, 0, 0.75)",
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 4,
   },
   subText: {
-    fontSize: 16,
-    color: "#666",
-    marginBottom: 20,
+    fontSize: 15,
+    color: "#ECECEC",
+    marginTop: 5,
+    textShadowColor: "rgba(0, 0, 0, 0.75)",
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 4,
   },
   searchBar: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fff",
-    padding: 10,
-    borderRadius: 10,
+    backgroundColor: "#FFF",
+    padding: 12,
+    borderRadius: 12,
+    marginHorizontal: 15,
+    marginTop: -25,
     shadowColor: "#000",
     shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 2,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 4,
   },
   searchInput: {
     flex: 1,
     marginLeft: 10,
     fontSize: 16,
+    color: "#333",
+  },
+  sectionTitle: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#2C3E50",
+    marginTop: 20,
+    marginLeft: 20,
   },
   cardsContainer: {
-    marginTop: 20,
     flexDirection: "row",
+    paddingHorizontal: 20,
+    marginTop: 10,
   },
   card: {
-    backgroundColor: "#fff",
-    padding: 15,
+    backgroundColor: "#FFF",
+    padding: 20,
     borderRadius: 15,
     alignItems: "center",
     justifyContent: "center",
     marginRight: 15,
-    width: 120,
-    height: 120,
+    width: 130,
+    height: 130,
     shadowColor: "#000",
     shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 3,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 4,
   },
   cardText: {
     fontSize: 14,
-    fontWeight: "bold",
+    fontWeight: "600",
     marginTop: 10,
-    color: "#444",
+    color: "#333",
+  },
+  
+  categoryContainer: {
+    flexDirection: "row",
+    paddingHorizontal: 20,
+    marginTop: 10,
+  
+  },
+  categoryCard: {
+    backgroundColor: "#1E88E5",
+    paddingVertical: 14,
+    paddingHorizontal: 22,
+    borderRadius: 22,
+    marginRight: 12,
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 5,
+  },
+  categoryText: {
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "600",
   },
 });
