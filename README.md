@@ -1,50 +1,56 @@
-# Welcome to your Expo app 👋
+# PocketPedia
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+PocketPedia is a React Native application designed to provide users with a comprehensive digital encyclopedia in their pocket. The app allows users to search, save, and explore various topics in an intuitive and user-friendly manner.
 
-## Get started
+## Features
 
-1. Install dependencies
+- *Search Functionality:* Users can search for topics and receive detailed information.
+- *Bookmarking:* Save favorite topics for easy access later.
+- *Offline Mode:* Access saved content without an internet connection.
+- *Dark Mode Support:* Switch between light and dark themes.
+- *User-friendly UI:* Intuitive design for seamless navigation.
 
-   ```bash
+## Installation
+
+To run PocketPedia locally, follow these steps:
+
+1. Clone the repository:
+   sh
+   git clone https://github.com/your-repo/pocketpedia.git
+   
+2. Navigate to the project directory:
+   sh
+   cd pocketpedia
+   
+3. Install dependencies:
+   sh
    npm install
-   ```
+   
+4. Run the app:
+   sh
+   npx react-native run-android # For Android
+   npx react-native run-ios # For iOS
+   
 
-2. Start the app
+## Functions and Working
 
-   ```bash
-    npx expo start
-   ```
+### 1. *Search Functionality*
+   - Users can enter keywords to search for topics.
+   - Fetches data from an API or a local database.
+   - Displays relevant results with detailed descriptions.
 
-In the output, you'll find options to open the app in a
+### 2. *Bookmarking System*
+   - Users can save topics for quick access.
+   - Bookmarked items are stored locally.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### 3. *Offline Mode*
+   - Saves previously accessed topics for offline reading.
+   - Uses local storage to cache data.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### 4. *Dark Mode Support*
+   - Users can toggle between light and dark modes.
+   - Enhances readability based on user preference.
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### 5. *User Authentication (Optional Feature)*
+   - Sign-in and sign-out functionalities.
+   - User profile management.
