@@ -32,7 +32,7 @@ export default function AuthScreen({ setIsAuthenticated }) {
   return (
     <View style={styles.container}>
       <Image source={require("../assets/Logo.png")} style={styles.logo} />
-\
+
       <Text style={styles.title}>{isLogin ? "Login" : "Sign Up"}</Text>
 
       <TextInput
